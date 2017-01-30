@@ -1,0 +1,121 @@
+{
+	"variables": {
+		"aws_access_key": "",
+		"aws_secret_key": "",
+		"build_timestamp": "{{timestamp}}",
+		"image_name": "packer-example",
+		"source_ami": "ami-0b33d91d",
+		"subnet_id": "subnet-3704e00a",
+		"vpc_id": "vpc-30cf2e54"
+	},
+	"builders": [{
+		"type": "amazon-ebs",
+		"ami_name": "{{user `image_name`}}-{{user `build_timestamp`}}",
+		"ami_description": "Build time: {{isotime \"2006-01-02_03:04:05\"}}",
+		"access_key": "{{user `aws_access_key`}}",
+		"secret_key": "{{user `aws_secret_key`}}",
+		"region": "us-east-1",
+		"associate_public_ip_address": true,
+		"source_ami": "{{user `source_ami`}}",
+		"instance_type": "t2.micro",
+		"ssh_username": "ec2-user",
+		"vpc_id": "{{user `vpc_id`}}",
+		"subnet_id": "{{user `subnet_id`}}"
+	}, {
+		"type": "virtualbox-iso",
+		"boot_command": [
+			"<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+		],
+		"boot_wait": "10s",
+		"disk_size": 40520,
+		"guest_os_type": "RedHat_64",
+		"headless": "true",
+		"http_directory": "http",
+		"iso_checksum": "783eef50e1fb91c78901d0421d8114a29b998478",
+		"iso_checksum_type": "sha1",
+		"iso_url": "http://bay.uchicago.edu/centos-vault/7.2.1511/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+		"ssh_username": "vagrant",
+		"ssh_password": "vagrant",
+		"ssh_port": 22,
+		"ssh_wait_timeout": "10000s",
+		"shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+		"guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+		"virtualbox_version_file": ".vbox_version",
+		"vboxmanage": [
+			["modifyvm", "{{.Name}}", "--memory", "512"],
+			["modifyvm", "{{.Name}}", "--cpus", "1"]
+		]
+	}, {
+		"type": "vmware-iso",
+		"boot_command": [
+			"<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+		],
+		"boot_wait": "10s",
+		"disk_size": 40520,
+		"guest_os_type": "centos-64",
+		"headless": "true",
+		"http_directory": "http",
+		"iso_checksum": "783eef50e1fb91c78901d0421d8114a29b998478",
+		"iso_checksum_type": "sha1",
+		"iso_url": "http://bay.uchicago.edu/centos-vault/7.2.1511/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+		"ssh_username": "vagrant",
+		"ssh_password": "vagrant",
+		"ssh_port": 22,
+		"ssh_wait_timeout": "10000s",
+		"shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+		"tools_upload_flavor": "linux",
+		"vmx_data": {
+			"memsize": "512",
+			"numvcpus": "1",
+			"cpuid.coresPerSocket": "1"
+		}
+	}],
+	"provisioners": [{
+		"type": "file",
+		"source": "./files",
+		"destination": "/tmp"
+	}, {
+		"type": "shell",
+		"execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
+		"override": {
+			"amazon-ebs": {
+				"scripts": [
+					"scripts/base.sh",
+					"scripts/amazon-ebs.sh",
+					"scripts/cleanup.sh"
+				]
+			},		
+			"virtualbox-iso": {
+				"scripts": [
+					"scripts/base.sh",
+					"scripts/vagrant.sh",
+					"scripts/virtualbox.sh",
+					"scripts/cleanup.sh"
+				]
+			},
+			"vmware-iso": {
+				"scripts": [
+					"scripts/base.sh",
+					"scripts/vagrant.sh",
+					"scripts/vmware.sh",
+					"scripts/cleanup.sh"
+				]
+			}
+		}
+	}],
+	"post-processors": [{
+		"type": "vagrant",
+		"keep_input_artifact": true,
+		"override": {
+			"amazon-ebs": {
+				"output": "{{user `image_name`}}-{{user `build_timestamp`}}-amazon-ebs.box"
+			},
+			"virtualbox": {
+				"output": "{{user `image_name`}}-{{user `build_timestamp`}}-virtualbox.box"
+			},
+			"vmware": {
+				"output": "{{user `image_name`}}-{{user `build_timestamp`}}-vmware.box"
+			}
+		}
+	}]
+}
