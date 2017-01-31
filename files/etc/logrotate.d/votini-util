@@ -1,0 +1,9 @@
+/var/log/votini/votini-util/log/votini-util.log {
+    compress
+    create 0700 root root
+    weekly
+    dateext
+    delaycompress
+    missingok
+}
+

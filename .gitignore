@@ -3,3 +3,8 @@ packer_cache/
 
 # For built boxes
 *.box
+
+output-*
+files/root/aws/credentials
+files/usr/local/bin/votini-utils
+

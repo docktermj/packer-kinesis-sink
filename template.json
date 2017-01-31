@@ -3,7 +3,7 @@
 		"aws_access_key": "",
 		"aws_secret_key": "",
 		"build_timestamp": "{{timestamp}}",
-		"image_name": "packer-example",
+		"image_name": "packer-kinesis-sink",
 		"source_ami": "ami-0b33d91d",
 		"subnet_id": "subnet-3704e00a",
 		"vpc_id": "vpc-30cf2e54"
@@ -90,6 +90,11 @@
 					"scripts/base.sh",
 					"scripts/vagrant.sh",
 					"scripts/virtualbox.sh",
+					"scripts/aws-credentials.sh",
+					"scripts/votini-utils.sh",
+					"scripts/votini-utils-log.sh",
+					"scripts/supervisor.sh",
+					"scripts/logrotate.sh",					
 					"scripts/cleanup.sh"
 				]
 			},

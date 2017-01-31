@@ -56,38 +56,47 @@ vagrant plugin install vagrant-vbguest
 ### Clone repository
 
 ```console
-mv ~/votini.git/packer-example ~/votini.git/packer-example.$(date +%s)
-git clone git@github.com:votini/packer-example.git ~/votini.git/packer-example
+mv ~/votini.git/packer-kinesis-sink ~/votini.git/packer-kinesis-sink.$(date +%s)
+git clone git@github.com:votini/packer-kinesis-sink.git ~/votini.git/packer-kinesis-sink
+```
+
+### FIXME: Copy files
+
+```console
+cp ~/.aws/credentials  ~/votini.git/packer-kinesis-sink/files/root/aws/credentials
+cp /home/michael/gocode/bin/votini-utils ~/votini.git/packer-kinesis-sink/files/usr/local/bin/votini-utils
 ```
 
 ### Build
 
 ```console
-cd ~/votini.git/packer-example
+cd ~/votini.git/packer-kinesis-sink
 packer build template.json
 ```
+
+packer build -force -only="virtualbox-iso" template.json
 
 ### Add to library
 
 ```console
-cd ~/votini.git/packer-example
-vagrant box add --name="packer-example-virtualbox" ./packer-example-nnnnnnnnnn-virtualbox.box
+cd ~/votini.git/packer-kinesis-sink
+vagrant box add --name="packer-kinesis-sink-virtualbox" ./packer-kinesis-sink-nnnnnnnnnn-virtualbox.box
 ```
 
 ### Run
 
 ```console
-mv /tmp/packer-example /tmp/packer-example.$(date +%s)
-mkdir /tmp/packer-example
-cd /tmp/packer-example
-vagrant init packer-example-virtualbox
+mv /tmp/packer-kinesis-sink /tmp/packer-kinesis-sink.$(date +%s)
+mkdir /tmp/packer-kinesis-sink
+cd /tmp/packer-kinesis-sink
+vagrant init packer-kinesis-sink-virtualbox
 vagrant up
 ```
 
 ### Login
 
 ```console
-cd /tmp/packer-example
+cd /tmp/packer-packer-kinesis-sink
 vagrant ssh
 ```
 

@@ -1,0 +1,12 @@
+/var/log/votini/votini-util/kinesis/votini-tag/votini-tag.log {
+    compress
+    create 0700 root root
+    daily
+    dateext
+    delaycompress
+    missingok
+    lastaction
+        sudo /usr/local/bin/supervisorctl restart votini_utils_kinesis_processvotes
+        sudo /usr/bin/aws s3 cp /var/log/votini/votini-util/kinesis/votini-tag/  s3://votini.ballots/$(date +'%Y')/$(date +'%m')/ --recursive --exclude "*" --include "*.gz"
+    endscript
+}

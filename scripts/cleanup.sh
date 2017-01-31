@@ -3,3 +3,5 @@ yum -y clean all
 rm -rf VBoxGuestAdditions_*.iso
 rm -rf /tmp/rubygems-*
 
+# FIXME: delete once everything tests out.
+# rm -rf /tmp/files
