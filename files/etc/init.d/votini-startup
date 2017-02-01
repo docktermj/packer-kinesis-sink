@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# votini-startup  Startup script Votini processes
+#
+# chkconfig:    345 90 03
+# description: votini-startup...
+# processname: votini-startup
+# config: /etc/votini-startup.conf
+# pidfile: /var/run/votini-startup.pid
+#
+### BEGIN INIT INFO
+# Provides: votini-startup
+# Required-Start: $all
+# Required-Stop: $all
+# Short-Description: start and stop Votini processes
+# Description: Votini...
+### END INIT INFO
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Source system settings
+if [ -f /etc/sysconfig/votini-startup ]; then
+    . /etc/sysconfig/votini-startup
+fi
+
+# Path to the supervisorctl script, server binary,
+# and short-form for messages.
+prog="votini-start"
+RETVAL=0
+
+usage () {
+    echo $"Usage: $0 {start}" 1>&2
+    RETVAL=2
+}
+
+start() {
+    echo -n $"Starting $prog: "
+    RETVAL=0
+    echo "Votini-startup ran" >> /home/startup-message.tmp
+    return $RETVAL
+}
+
+case "$1" in
+    start) start ;;
+    *) usage ;;
+esac
+
+exit $RETVAL

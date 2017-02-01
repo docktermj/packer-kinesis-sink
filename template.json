@@ -94,6 +94,7 @@
 					"scripts/votini-utils.sh",
 					"scripts/votini-utils-log.sh",
 					"scripts/supervisor.sh",
+					"scripts/votini-startup.sh",					
 					"scripts/logrotate.sh",					
 					"scripts/cleanup.sh"
 				]

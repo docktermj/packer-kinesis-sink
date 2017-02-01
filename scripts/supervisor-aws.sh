@@ -4,6 +4,12 @@
 yum install -y python-setuptools
 easy_install supervisor
 
+# sysconfig/supervisord
+
+mv /tmp/files/etc/sysconfig/supervisord-aws /etc/sysconfig/supervisord
+chown root:root /etc/sysconfig/supervisord
+chmod 600       /etc/sysconfig/supervisord
+
 # supervisord.conf
 
 mv /tmp/files/etc/supervisord.conf /etc

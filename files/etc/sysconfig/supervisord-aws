@@ -1,0 +1,2 @@
+SUPERVISORCTL=/usr/local/bin/supervisorctl
+SUPERVISORD=/usr/local/bin/supervisord
