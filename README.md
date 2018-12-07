@@ -56,21 +56,21 @@ vagrant plugin install vagrant-vbguest
 ### Clone repository
 
 ```console
-mv ~/votini.git/packer-example ~/votini.git/packer-example.$(date +%s)
-git clone git@github.com:votini/packer-example.git ~/votini.git/packer-example
+mv ~/docktermj.git/packer-example ~/docktermj.git/packer-example.$(date +%s)
+git clone git@github.com:docktermj/packer-example.git ~/docktermj.git/packer-example
 ```
 
 ### Build
 
 ```console
-cd ~/votini.git/packer-example
+cd ~/docktermj.git/packer-example
 packer build template.json
 ```
 
 ### Add to library
 
 ```console
-cd ~/votini.git/packer-example
+cd ~/docktermj.git/packer-example
 vagrant box add --name="packer-example-virtualbox" ./packer-example-nnnnnnnnnn-virtualbox.box
 ```
 
